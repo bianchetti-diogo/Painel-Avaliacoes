@@ -58,7 +58,7 @@
   #login-error{ color:var(--accent-least); font-size:13px; margin-top:10px; min-height:16px; }
 
   /* ---------- APP SHELL ---------- */
-  #screen-app{ display:flex; min-height:100vh; }
+  #screen-app.active{ display:flex; min-height:100vh; }
   .sidebar{
     width:230px; flex-shrink:0; background:var(--card); border-right:1px solid var(--line);
     padding:26px 16px; display:flex; flex-direction:column;
@@ -363,14 +363,28 @@ function renderListView(cfg){
       const domInfo = sys.letters[row.dominant];
       const secInfo = sys.letters[row.secondary];
       const color = domInfo ? domInfo.color : 'var(--ink)';
-      return '<div class="sub-card" onclick="openDetail('+idx+')">'+
-        '<div><div class="name">'+(row.name||'(sem nome)')+'</div>'+
+      return '<div class="sub-card">'+
+        '<div style="cursor:pointer; flex:1;" onclick="openDetail('+idx+')">'+
+        '<div class="name">'+(row.name||'(sem nome)')+'</div>'+
         '<div class="meta">'+(row.role ? row.role+' · ' : '')+date+(row.event_label ? ' · '+row.event_label : '')+'</div></div>'+
-        '<span class="badge" style="background:'+color+'">'+(domInfo?domInfo.name:row.dominant)+' / '+(secInfo?secInfo.name:row.secondary)+'</span>'+
+        '<span class="badge" style="background:'+color+'; margin-right:10px;">'+(domInfo?domInfo.name:row.dominant)+' / '+(secInfo?secInfo.name:row.secondary)+'</span>'+
+        '<button class="btn btn-ghost" style="padding:7px 12px; font-size:12px;" onclick="event.stopPropagation(); deleteSubmission(\''+row.id+'\', '+idx+')">🗑️ Excluir</button>'+
       '</div>';
     }).join('');
   }
   listView.innerHTML = html;
+}
+
+async function deleteSubmission(id, idx){
+  const row = CURRENT_SUBMISSIONS[idx];
+  const ok = confirm('Excluir a avaliação de "'+(row.name||'(sem nome)')+'"? Essa ação não pode ser desfeita.');
+  if(!ok) return;
+  const { error } = await supabaseClient.from('submissions').delete().eq('id', id);
+  if(error){
+    alert('Não foi possível excluir: ' + error.message);
+    return;
+  }
+  await loadSubmissions(CURRENT_TYPE);
 }
 
 /* ============================================================
@@ -383,6 +397,7 @@ function openDetail(idx){
   const cfg = ASSESSMENT_REGISTRY.find(a => a.key === CURRENT_TYPE);
   const sys = SYSTEMS[cfg.system];
   CURRENT_REPORT = {
+    id: row.id, idx: idx,
     name: row.name, role: row.role,
     dom: row.dominant, sec: row.secondary,
     pct: { D: row.pct_d, I: row.pct_i, S: row.pct_s, C: row.pct_c },
@@ -446,9 +461,22 @@ function buildDetailHTML(report){
   html += '<div class="footer-actions">'+
     '<button class="btn btn-primary" onclick="exportPDF()">↓ Baixar relatório em PDF</button>'+
     '<button class="btn btn-ghost" onclick="backToList()">← Voltar à lista</button>'+
+    '<button class="btn btn-ghost" style="color:var(--accent-least); border-color:rgba(255,61,127,0.4);" onclick="deleteFromDetail()">🗑️ Excluir</button>'+
   '</div>';
 
   return html;
+}
+
+async function deleteFromDetail(){
+  const ok = confirm('Excluir a avaliação de "'+(CURRENT_REPORT.name||'(sem nome)')+'"? Essa ação não pode ser desfeita.');
+  if(!ok) return;
+  const { error } = await supabaseClient.from('submissions').delete().eq('id', CURRENT_REPORT.id);
+  if(error){
+    alert('Não foi possível excluir: ' + error.message);
+    return;
+  }
+  await loadSubmissions(CURRENT_TYPE);
+  backToList();
 }
 
 function backToList(){
