@@ -180,9 +180,9 @@
    ============================================================ */
 const SUPABASE_URL = "https://xwwptrbkuctzbgjsnrju.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh3d3B0cmJrdWN0emJnanNucmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwNjQ4NDMsImV4cCI6MjEwMjY0MDg0M30.ZZCTIHlJs2ve_oIr_2d0jsyEU3yfx2K7vneH3qxYXJw";
-let supabase = null;
+let supabaseClient = null;
 try {
-  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 } catch(e) {
   console.error('Falha ao iniciar o Supabase', e);
   document.addEventListener('DOMContentLoaded', () => {
@@ -277,11 +277,11 @@ async function doLogin(){
   const password = document.getElementById('login-password').value;
   const err = document.getElementById('login-error');
   err.textContent = '';
-  if(!supabase){
+  if(!supabaseClient){
     err.textContent = 'Conexão com o banco de dados não está configurada corretamente.';
     return;
   }
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
   if(error){
     err.textContent = 'Login inválido: ' + error.message;
     return;
@@ -289,13 +289,13 @@ async function doLogin(){
   enterApp();
 }
 async function doLogout(){
-  await supabase.auth.signOut();
+  await supabaseClient.auth.signOut();
   document.getElementById('screen-app').classList.remove('active');
   document.getElementById('screen-login').classList.add('active');
 }
 
 async function checkExistingSession(){
-  const { data } = await supabase.auth.getSession();
+  const { data } = await supabaseClient.auth.getSession();
   if(data && data.session){ enterApp(); }
 }
 
@@ -337,7 +337,7 @@ async function loadSubmissions(key){
   const listView = document.getElementById('view-list');
   const cfg = ASSESSMENT_REGISTRY.find(a => a.key === key);
   listView.innerHTML = '<div class="list-header"><h1 style="font-size:24px;">'+cfg.label+'</h1></div><p class="empty-note">Carregando...</p>';
-  const { data, error } = await supabase
+  const { data, error } = await supabaseClient
     .from('submissions')
     .select('*')
     .eq('assessment_type', key)
