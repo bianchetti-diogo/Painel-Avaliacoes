@@ -198,7 +198,8 @@ try {
    ============================================================ */
 const ASSESSMENT_REGISTRY = [
   { key: 'barbearia',        label: 'Barbearia',        color: '#F03A47', system: 'disc4' },
-  { key: 'disc_corporativo', label: 'DISC Corporativo', color: '#4C6FFF', system: 'disc4' }
+  { key: 'disc_corporativo', label: 'DISC Corporativo', color: '#4C6FFF', system: 'disc4' },
+  { key: 'casais',           label: 'Casais',            color: '#FF3D7F', system: 'temperamentos4' }
   // Pra adicionar um novo público (ex: Igreja), inclua uma linha aqui:
   // { key: 'igreja', label: 'Igreja', color: '#1FBF9F', system: 'disc4' },
 ];
@@ -266,6 +267,65 @@ SYSTEMS.disc4 = {
     S:"Seu maior atrito tende a ser com perfis <b>D (Colérico)</b>: eles podem parecer duros(as) ou impositivos(as) para você. Em conflito, seja direto(a) e claro(a) sobre o que sente — evitar o confronto só adia o problema e pode ser lido como concordância.",
     I:"Seu maior atrito tende a ser com perfis <b>C (Melancólico)</b>: eles podem parecer frios(as) ou excessivamente críticos(as) para você. Em conflito, traga fatos concretos em vez de apelar à emoção, e dê tempo para a pessoa processar antes de esperar uma resposta.",
     C:"Seu maior atrito tende a ser com perfis <b>I (Sanguíneo)</b>: eles podem parecer dispersos(as) ou pouco criteriosos(as) para você. Em conflito, evite ser excessivamente técnico(a) ou crítico(a) logo de cara — reconheça a energia positiva antes de apontar os riscos."
+  }
+};
+
+SYSTEMS.temperamentos4 = {
+  order: ["CO","SA","FL","ME"],
+  letters: {
+    CO:{
+      name:"Colérico", temperament:"Colérico", color:"#F03A47",
+      desc:"decididas e diretas no relacionamento. Tomam a frente em decisões do dia a dia, resolvem problemas práticos rápido e não fogem de conversas difíceis — mas podem parecer controladoras ou impacientes com o ritmo do parceiro(a).",
+      s:["Toma decisões práticas do casal sem enrolar","Enfrenta problemas do relacionamento de frente, sem varrer pra baixo do tapete","Traz senso de direção e propósito pro relacionamento","Defende o parceiro(a) e a relação com convicção","Não foge de conversas difíceis quando precisa resolver algo"],
+      w:["Pode impor decisões sem consultar o parceiro(a)","Tende à impaciência quando o parceiro(a) precisa de mais tempo","Pode parecer autoritário(a) ou controlador(a) no dia a dia","Dificuldade em pedir desculpas ou admitir que errou","Pode priorizar \"resolver logo\" acima de acolher o sentimento do outro"],
+      o:["Traz estrutura e decisão pra planejar o futuro do casal","Ótimo(a) pra tomar a frente em crises e decisões financeiras importantes","Pode ser o motor que impulsiona projetos de vida do casal","Defende a relação com firmeza diante de interferências externas"],
+      t:["Risco de o parceiro(a) se sentir sufocado(a) ou controlado(a)","Pode gerar desgaste por não validar os sentimentos antes de agir","Tende a tomar decisões do casal sem real consenso","Corre o risco de se afastar emocionalmente ao evitar vulnerabilidade"]
+    },
+    SA:{
+      name:"Sanguíneo", temperament:"Sanguíneo", color:"#F5A623",
+      desc:"afetuosas, expressivas e cheias de energia no relacionamento. Trazem leveza, surpresas e espontaneidade pro dia a dia — mas podem ter dificuldade em manter rotina, cumprir combinados ou lidar com conversas mais sérias.",
+      s:["Traz leveza, brincadeira e afeto pro dia a dia do casal","Expressa carinho e sentimentos com facilidade","Cria memórias afetivas e surpresas espontâneas","Otimismo que ajuda o casal a atravessar fases difíceis","Facilidade pra se reconectar depois de uma briga"],
+      w:["Pode evitar conversas sérias trocando de assunto ou brincando","Tende a esquecer combinados ou compromissos do dia a dia","Organização financeira e rotina não são pontos fortes naturais","Pode se magoar fácil e reagir de forma emocional demais","Corre o risco de buscar validação externa em vez de dentro da relação"],
+      o:["Mantém viva a paixão e a espontaneidade da relação","Ótimo(a) pra criar rituais afetivos e datas especiais","Ajuda o casal a rir das dificuldades e não travar em cima de problemas pequenos","Pode ser a ponte social do casal com amigos e família"],
+      t:["Risco de o parceiro(a) sentir falta de profundidade ou compromisso","Pode gerar instabilidade financeira ou de rotina por impulsividade","Tende a evitar resolver de verdade o que incomoda, só \"passar por cima\"","Corre o risco de gerar desconfiança se promessas não forem cumpridas"]
+    },
+    FL:{
+      name:"Fleumático", temperament:"Fleumático", color:"#1FBF9F",
+      desc:"pacientes, leais e estáveis no relacionamento. Evitam conflito, são o porto seguro do parceiro(a) e mantêm a relação constante — mas podem evitar conversas necessárias e acumular mágoas por não se expressar.",
+      s:["É o porto seguro emocional do relacionamento","Consistente e confiável no dia a dia, sem grandes sobressaltos","Ótimo(a) ouvinte, dá espaço pro parceiro(a) se expressar","Evita brigas desnecessárias, buscando sempre a paz","Leal e comprometido(a) mesmo nos momentos difíceis"],
+      w:["Evita conflitos necessários, deixando problemas se acumularem","Pode demorar a tomar decisões importantes do casal","Tende a não expressar o que realmente sente pra não incomodar","Resistência a mudanças na rotina do relacionamento","Pode parecer indiferente ao guardar as emoções pra si"],
+      o:["Traz estabilidade emocional que sustenta o casal em fases difíceis","Constrói uma relação de confiança de longo prazo","Ótimo(a) mediador(a) quando o parceiro(a) está agitado(a) ou estressado(a)","Cria uma sensação de segurança e previsibilidade valiosa pro relacionamento"],
+      t:["Risco de acumular ressentimento por anos sem nunca verbalizar","Pode ser visto(a) como acomodado(a) ou sem iniciativa pela relação","Tende a evitar assuntos difíceis até virarem uma crise maior","Corre o risco de o parceiro(a) não saber realmente o que se passa por dentro"]
+    },
+    ME:{
+      name:"Melancólico", temperament:"Melancólico", color:"#4C6FFF",
+      desc:"atentas, criteriosas e profundas no relacionamento. Pensam bastante antes de agir, notam detalhes que o parceiro(a) nem percebe e valorizam qualidade no tempo a dois — mas podem ser excessivamente críticas ou ficar presas em análises ao invés de agir.",
+      s:["Presta atenção genuína em detalhes que o parceiro(a) gosta","Pensa com profundidade sobre o relacionamento e o futuro do casal","Alto padrão de cuidado e comprometimento nas coisas que faz pela relação","Identifica problemas antes que eles cresçam","Busca qualidade real no tempo a dois, não só quantidade"],
+      w:["Tendência ao perfeccionismo, cobrando demais de si e do parceiro(a)","Pode ser excessivamente crítico(a) com pequenas falhas do dia a dia","Dificuldade em expressar emoção de forma espontânea","Tende a evitar se abrir por medo de ser mal interpretado(a)","Pode analisar demais a relação em vez de simplesmente vivê-la"],
+      o:["Traz profundidade e intencionalidade real pro relacionamento","Ótimo(a) pra planejar o futuro do casal com cuidado","Percebe e resolve pequenos atritos antes que virem grandes problemas","Constrói uma relação sólida baseada em coerência e confiança"],
+      t:["Risco do parceiro(a) se sentir constantemente avaliado(a) ou criticado(a)","Pode travar decisões importantes do casal por excesso de análise","Tende a se distanciar emocionalmente em momentos de alta exigência","Corre o risco de sufocar a espontaneidade natural da relação"]
+    }
+  },
+  opposite: {CO:"FL", FL:"CO", SA:"ME", ME:"SA"},
+  relations: {
+    CO:{ SA:"Dê mais espaço para o afeto e a leveza que seu par traz — evite tratar assuntos emocionais só como \"itens a resolver\". Elogie mais e cobre menos.",
+         FL:"Desacelere o ritmo e pergunte o que seu par sente antes de decidir por ele(a). Dê tempo, evite pressionar por resposta imediata.",
+         ME:"Explique o raciocínio por trás das suas decisões e ouça as ponderações do seu par com paciência — evite forçar uma resposta rápida." },
+    SA:{ CO:"Seja mais consistente com compromissos e menos disperso(a) — seu par valoriza previsibilidade e palavra cumprida mais do que romantismo do momento.",
+         FL:"Reduza a intensidade emocional nas discussões e mostre estabilidade ao longo do tempo — evite prometer e não cumprir.",
+         ME:"Traga mais estrutura e menos improviso pros planos do casal — seu par se sente mais seguro(a) com clareza do que com surpresas constantes." },
+    FL:{ CO:"Expresse sua opinião com mais clareza e menos silêncio — seu par não vai adivinhar o que você sente se você não falar.",
+         SA:"Participe mais ativamente das conversas e menos passivamente — mostre entusiasmo real, não só concordância.",
+         ME:"Compartilhe mais seus sentimentos em vez de guardá-los — seu par valoriza saber o que realmente se passa com você." },
+    ME:{ CO:"Seja mais direto(a) e menos hesitante ao expressar discordância — seu par respeita quem se posiciona com clareza.",
+         SA:"Solte mais a espontaneidade e critique menos os pequenos deslizes — aprecie a leveza que seu par traz pro dia a dia.",
+         FL:"Dê mais espaço emocional e menos pressão por perfeição — reconheça o esforço do seu par, não só os detalhes que faltam." }
+  },
+  conflict: {
+    CO:"Seu maior atrito tende a ser com parceiros(as) <b>Fleumáticos(as)</b>: você pode parecer impositivo(a) e seu par pode parecer indiferente ou lento(a) demais pra reagir. Em conflito, desacelere, pergunte antes de decidir, e dê espaço pro seu par se posicionar sem sentir pressão.",
+    FL:"Seu maior atrito tende a ser com parceiros(as) <b>Coléricos(as)</b>: eles podem parecer duros(as) ou controladores(as) pra você. Em conflito, expresse o que sente com clareza — o silêncio pode ser interpretado como concordância, e isso alimenta o padrão.",
+    SA:"Seu maior atrito tende a ser com parceiros(as) <b>Melancólicos(as)</b>: eles podem parecer frios(as) ou excessivamente críticos(as) pra você. Em conflito, traga fatos e seja mais objetivo(a) em vez de apelar só à emoção — e dê tempo pro seu par processar antes de esperar uma resposta.",
+    ME:"Seu maior atrito tende a ser com parceiros(as) <b>Sanguíneos(as)</b>: eles podem parecer dispersos(as) ou pouco comprometidos(as) pra você. Em conflito, evite criticar excessivamente os deslizes — reconheça a leveza e a boa intenção antes de apontar o que faltou."
   }
 };
 
@@ -396,11 +456,16 @@ function openDetail(idx){
   const row = CURRENT_SUBMISSIONS[idx];
   const cfg = ASSESSMENT_REGISTRY.find(a => a.key === CURRENT_TYPE);
   const sys = SYSTEMS[cfg.system];
+  const pct = {};
+  pct[sys.order[0]] = row.pct_d;
+  pct[sys.order[1]] = row.pct_i;
+  pct[sys.order[2]] = row.pct_s;
+  pct[sys.order[3]] = row.pct_c;
   CURRENT_REPORT = {
     id: row.id, idx: idx,
     name: row.name, role: row.role,
     dom: row.dominant, sec: row.secondary,
-    pct: { D: row.pct_d, I: row.pct_i, S: row.pct_s, C: row.pct_c },
+    pct: pct,
     sys: sys
   };
   document.getElementById('view-list').style.display = 'none';
@@ -607,10 +672,10 @@ function exportPDF(){
   checkPage(20);
   doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.setTextColor(20,20,25);
   doc.text('Análise SWOT', margin, y); y += 8;
-  section('Forças', mergeList('s',3,2), hexToRgb(sys.letters.S.color));
-  section('Fraquezas', mergeList('w',3,2), hexToRgb(sys.letters.D.color));
-  section('Oportunidades', mergeList('o',3,2), hexToRgb(sys.letters.I.color));
-  section('Ameaças', mergeList('t',3,2), hexToRgb(sys.letters.C.color));
+  section('Forças', mergeList('s',3,2), hexToRgb(sys.letters.S ? sys.letters.S.color : sys.letters[sys.order[2]].color));
+  section('Fraquezas', mergeList('w',3,2), hexToRgb(sys.letters.D ? sys.letters.D.color : sys.letters[sys.order[0]].color));
+  section('Oportunidades', mergeList('o',3,2), hexToRgb(sys.letters.I ? sys.letters.I.color : sys.letters[sys.order[1]].color));
+  section('Ameaças', mergeList('t',3,2), hexToRgb(sys.letters.C ? sys.letters.C.color : sys.letters[sys.order[3]].color));
 
   checkPage(20);
   doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.setTextColor(20,20,25);
