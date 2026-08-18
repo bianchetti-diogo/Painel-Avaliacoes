@@ -6,7 +6,7 @@
 <title>Painel — Avaliações Comportamentais</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   :root{
@@ -180,7 +180,16 @@
    ============================================================ */
 const SUPABASE_URL = "https://xwwptrbkuctzbgjsnrju.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh3d3B0cmJrdWN0emJnanNucmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwNjQ4NDMsImV4cCI6MjEwMjY0MDg0M30.ZZCTIHlJs2ve_oIr_2d0jsyEU3yfx2K7vneH3qxYXJw";
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let supabase = null;
+try {
+  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+} catch(e) {
+  console.error('Falha ao iniciar o Supabase', e);
+  document.addEventListener('DOMContentLoaded', () => {
+    const err = document.getElementById('login-error');
+    if(err) err.textContent = 'Não foi possível conectar ao banco de dados. Verifique a configuração de SUPABASE_URL / SUPABASE_ANON_KEY.';
+  });
+}
 
 /* ============================================================
    REGISTRO — o "menu que cresce". Cada nova ferramenta publicada
@@ -268,6 +277,10 @@ async function doLogin(){
   const password = document.getElementById('login-password').value;
   const err = document.getElementById('login-error');
   err.textContent = '';
+  if(!supabase){
+    err.textContent = 'Conexão com o banco de dados não está configurada corretamente.';
+    return;
+  }
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if(error){
     err.textContent = 'Login inválido: ' + error.message;
